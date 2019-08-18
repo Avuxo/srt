@@ -23,7 +23,7 @@ function parseSub(sub) {
   return {
     startTime: timeTokens[0],
     endTime: timeTokens[1],
-    text: tokens.slice(2).join('\n')
+    text: tokens.slice(2).join('')
   };
 }
 
@@ -32,11 +32,12 @@ function parseTime(timestamp) {
   const tokens = timestamp.split(':');
   const seconds = tokens[2].split(',');
 
-  return parseInt(seconds[1])      + // milliseconds
+  let time =
     (parseInt(seconds[0]) * 1000)  + // seconds
     (parseInt(tokens[1]) * 60000)  + // minutes
-    (parseInt(tokens[0]) * 3600000); // hours
-    
+      (parseInt(tokens[0]) * 3600000); // hours
+
+  return time / 1000; // i just want to keep the real ms-based numbers.
 }
 
 module.exports = parse;

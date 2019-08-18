@@ -8,11 +8,17 @@ if (process.argv.length < 3) process.exit();
 const srt = readFileSync(process.argv[2]).toString();
 const subs = parse(srt);
 
-let counter = parseInt(process.argv[3]) || 0; // optional offset for sub in ms
+const optionalOffset = parseInt(process.argv[3]) || 0;
+const startTime = Date.now() + optionalOffset;
+
 let currentSubIndex = 0; // index of current parsed subtitle.
+let currentTime = 0;
+let counter = optionalOffset;
 
 // every milisecond log the next subtitle.
 setInterval(function() {
+  counter ++;
+  console.log(counter, subs[currentSubIndex].startTime);
   if (currentSubIndex == subs.length) {
     console.log('reached end of srt file.');
     process.exit();
@@ -22,6 +28,4 @@ setInterval(function() {
     console.log(subs[currentSubIndex].text);
     currentSubIndex++;
   }
-
-  counter += 1;
-}, 1);
+}, 1000);
